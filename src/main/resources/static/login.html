@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="signOnForm">
+    <p>
+        <label>Account:<input name="account" value="10086"></label>
+    </p>
+    <p>
+        <label>Password:<input name="password" value="10086"></label>
+    </p>
+    <p>
+        <label>Remember Me:<input type="checkbox" checked name="rememberMe"></label>
+    </p>
+    <p>
+        <button>Sign In</button>
+    </p>
+</form>
+<script src="/lib/axios.js"></script>
+<script>
+    document.getElementById("signOnForm")
+        .addEventListener("submit",function (evt) {
+            evt.preventDefault();
+            let data=new URLSearchParams();
+            let account=this.account.value.trim();
+            if(account.length===0){
+                alert("please input the account");
+                this.account.focus();
+                return;
+            }
+            let password=this.password.value.trim();
+            if(password.length===0){
+                alert("please input the password");
+                this.password.focus();
+                return;
+            }
+            data.append("account",account);
+            data.append("password",account);
+
+            data.append("rememberMe",this.rememberMe.checked?"1":"0");
+            handleSignOn(data);
+        });
+
+    let handleSignOn=function (formdata) {
+        let url="/api/session";
+
+        axios.post(url,formdata).then(function (resp) {
+            alert("登录成功");
+            location.href="/index.html";
+        });
+    }
+</script>
+</body>
+</html>
